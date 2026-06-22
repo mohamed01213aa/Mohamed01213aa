@@ -57,10 +57,11 @@
       font-size: clamp(2rem, 5vw, 3rem);
       text-align: center; margin-bottom: 16px;
       letter-spacing: 0.5px;
+      color: #ffffff;
     }
     .section-sub {
       text-align: center; font-weight: 300; font-size: 1.05rem;
-      color: rgba(255,255,255,0.55); margin-bottom: 60px;
+      color: #f9b233; margin-bottom: 60px;
     }
 
     /* ── Buttons ── */
@@ -186,10 +187,50 @@
       color: rgba(255,255,255,0.78); margin-bottom: 20px;
       font-size: 1.02rem;
     }
+    .about-highlight {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; font-style: italic;
+      color: rgba(255,255,255,0.7);
+      border-left: 3px solid #8B2635;
+      padding: 16px 24px; margin: 28px 0;
+      background: rgba(139,38,53,0.08);
+      border-radius: 0 12px 12px 0;
+    }
+    .about-stats {
+      display: flex; gap: 10px; margin: 24px 0 20px;
+    }
+    .about-stat {
+      flex: 1; text-align: center;
+      background: rgba(245,230,211,0.04);
+      border: 1px solid rgba(245,230,211,0.08);
+      border-radius: 14px; padding: 18px 12px;
+      transition: all 0.3s ease;
+    }
+    .about-stat:hover {
+      background: rgba(139,38,53,0.15);
+      border-color: rgba(139,38,53,0.3);
+      transform: translateY(-3px);
+    }
+    .about-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem; font-weight: 700;
+      color: #8B2635; display: block; line-height: 1.2;
+    }
+    .about-stat-label {
+      font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.5px; color: rgba(255,255,255,0.5);
+    }
     .skills-area h3 {
       font-family: 'Inter', sans-serif; font-weight: 600;
       font-size: 1.1rem; letter-spacing: 1px; text-transform: uppercase;
-      color: rgba(245,230,211,0.5); margin-bottom: 20px;
+      color: #ffffff; margin-bottom: 14px;
+    }
+    .skills-group { margin-bottom: 24px; }
+    .skills-group:last-child { margin-bottom: 0; }
+    .skills-group-label {
+      font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 1.5px; color: #f9b233;
+      margin-bottom: 10px; font-weight: 600;
     }
     .skills-grid {
       display: grid; grid-template-columns: 1fr 1fr;
@@ -810,27 +851,57 @@
           <p>
             I&rsquo;m a <strong>Social Media Specialist</strong> and <strong>Shopify Website Developer</strong> based in Cairo, Egypt. I&rsquo;m passionate about helping brands build a strong digital presence and achieve measurable growth.
           </p>
+
+          <div class="about-highlight">
+            &ldquo;I blend creativity, strategy &amp; technology to turn brands into digital success stories.&rdquo;
+          </div>
+
+          <div class="about-stats">
+            <div class="about-stat">
+              <span class="about-stat-num">11+</span>
+              <span class="about-stat-label">Brands</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat-num">6</span>
+              <span class="about-stat-label">Industries</span>
+            </div>
+            <div class="about-stat">
+              <span class="about-stat-num">3+</span>
+              <span class="about-stat-label">Years Exp.</span>
+            </div>
+          </div>
+
           <p>
-            I specialize in creating effective social media strategies, managing content across multiple platforms, and developing engaging campaigns that increase brand awareness and audience engagement. On the technical side, I design and build professional Shopify e-commerce stores with a sharp focus on user experience, performance, and conversion optimization.
+            I specialize in crafting data-driven social media strategies, managing content across multiple platforms, and developing campaigns that boost brand awareness and engagement. On the technical side, I build polished Shopify stores with a sharp focus on user experience, performance, and conversion.
           </p>
           <p>
-            I&rsquo;ve collaborated with brands across fashion, food &amp; beverage, automotive, tourism, education, and retail — combining creativity, strategy, and technology to drive real business results.
+            I&rsquo;ve collaborated with brands across fashion, food &amp; beverage, automotive, tourism, education, and retail — each project a new challenge to solve with creativity and precision.
           </p>
         </div>
         <div class="skills-area" data-reveal="right">
           <h3>Core Expertise</h3>
-          <div class="skills-grid">
-            <div class="skill-tag">Social Media Management</div>
-            <div class="skill-tag">Content Strategy &amp; Planning</div>
-            <div class="skill-tag">Social Media Advertising</div>
-            <div class="skill-tag">Community Management</div>
-            <div class="skill-tag">Performance Analytics &amp; Reporting</div>
-            <div class="skill-tag">Shopify Store Design &amp; Dev</div>
-            <div class="skill-tag">E-commerce Management</div>
-            <div class="skill-tag">Product Upload &amp; Store Optimization</div>
-            <div class="skill-tag">WordPress Development</div>
-            <div class="skill-tag">Canva &amp; Creative Content Design</div>
-            <div class="skill-tag">Digital Marketing Strategy</div>
+
+          <div class="skills-group">
+            <div class="skills-group-label">Social Media &amp; Marketing</div>
+            <div class="skills-grid">
+              <div class="skill-tag">Social Media Management</div>
+              <div class="skill-tag">Content Strategy &amp; Planning</div>
+              <div class="skill-tag">Social Media Advertising</div>
+              <div class="skill-tag">Community Management</div>
+              <div class="skill-tag">Performance Analytics &amp; Reporting</div>
+              <div class="skill-tag">Digital Marketing Strategy</div>
+            </div>
+          </div>
+
+          <div class="skills-group">
+            <div class="skills-group-label">Web &amp; Design</div>
+            <div class="skills-grid">
+              <div class="skill-tag">Shopify Store Design &amp; Dev</div>
+              <div class="skill-tag">E-commerce Management</div>
+              <div class="skill-tag">Product Upload &amp; Optimization</div>
+              <div class="skill-tag">WordPress Development</div>
+              <div class="skill-tag">Canva &amp; Creative Content Design</div>
+            </div>
           </div>
         </div>
       </div>

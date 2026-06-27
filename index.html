@@ -657,18 +657,37 @@
       position: sticky; top: 40px;
     }
     .po-image-wrap {
-      border-radius: 20px; overflow: hidden;
-      background: linear-gradient(135deg, rgba(139,38,53,0.12), rgba(0,0,0,0.3));
-      border: 1px solid rgba(245,230,211,0.08);
+      border-radius: 16px 16px 0 0; position: relative;
+      overflow: visible; width: 100%;
       display: flex; align-items: center; justify-content: center;
-      padding: 36px; aspect-ratio: 1/1; margin-bottom: 20px;
+      aspect-ratio: 16/9; margin-bottom: 0;
       box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      border: 1px solid rgba(245,230,211,0.08);
+      border-bottom: none;
+      background-size: cover; background-position: center;
+      background-color: rgba(10,10,15,0.85);
     }
-    .po-image-wrap img { width: 100%; height: 100%; object-fit: contain;
-      transition: transform 0.4s ease; }
-    .po-image-wrap:hover img { transform: scale(1.05); }
+    .po-logo-circle {
+      position: absolute; bottom: 0; left: 50%;
+      transform: translate(-50%, 50%);
+      width: 46%; aspect-ratio: 1/1;
+      border-radius: 50%; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(10,10,15,0.55);
+      border: 2px solid rgba(245,230,211,0.12);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      padding: 0;
+      z-index: 2;
+    }
+    .po-logo-circle img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .po-image-wrap:hover .po-logo-circle img { transform: scale(1.08); }
+    .po-image-wrap:hover .po-logo-circle { border-color: rgba(245,230,211,0.25); }
     .po-meta {
       display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+      margin-top: clamp(48px, 8vw, 80px);
     }
     .po-tag {
       display: inline-block; font-size: 0.65rem;
@@ -804,8 +823,8 @@
     @media (max-width: 900px) {
       .project-overlay { padding: 20px; }
       .po-inner { grid-template-columns: 1fr; gap: 30px; }
-      .po-left { position: static; max-width: 400px; margin: 0 auto; }
-      .po-image-wrap { max-width: 240px; margin: 0 auto 18px; }
+      .po-left { position: static; max-width: 400px; width: 100%; margin: 0 auto; }
+      .po-image-wrap { max-width: 360px; width: 100%; margin: 0 auto; }
       .po-meta { justify-content: center; }
       .po-socials { justify-content: center; }
       .po-nav-btns { max-width: 300px; margin: 18px auto 0; }
@@ -1494,7 +1513,11 @@
     <button class="po-close" id="poClose">&times;</button>
     <div class="po-inner">
       <div class="po-left">
-        <div class="po-image-wrap"><img id="poImage" src="" alt=""></div>
+        <div class="po-image-wrap">
+          <div class="po-logo-circle">
+            <img id="poImage" src="" alt="">
+          </div>
+        </div>
         <div class="po-meta">
           <span class="po-tag" id="poTag"></span>
           <span class="po-counter" id="poCounter"></span>
@@ -1646,6 +1669,7 @@
     const projectData = [
       {
         id: 'mgnt',
+        bg: 'The projects I worked on/background for brand/background for brand mgnt.jpg',
         tag: 'Fashion',
         title: 'MGNT',
         industry: 'Men\'s Casual Fashion Brand',
@@ -1659,6 +1683,7 @@
       },
       {
         id: 'mosca',
+        bg: 'The projects I worked on/background for brand/background for brand mosca.jpg',
         tag: 'Fashion',
         title: 'MOSCA Wear',
         industry: 'Women\'s Fashion & Casual Wear',
@@ -1672,6 +1697,7 @@
       },
       {
         id: 'firstvoc',
+        bg: 'The projects I worked on/background for brand/background for brand frist voc.jpg',
         tag: 'Hair Care',
         title: 'First Voc',
         industry: 'Hair Care & Beauty Products',
@@ -1685,6 +1711,7 @@
       },
       {
         id: 'edukido',
+        bg: 'The projects I worked on/background for brand/background for brand Edukido.jpg',
         tag: 'Education',
         title: 'Edukido',
         industry: 'Education & Skills Development',
@@ -1698,6 +1725,7 @@
       },
       {
         id: 'oshisushi',
+        bg: 'The projects I worked on/background for brand/background for brand oshi sushi.jpg',
         tag: 'F&B',
         title: 'Oshi Sushi',
         industry: 'Japanese Restaurant & Sushi',
@@ -1711,6 +1739,7 @@
       },
       {
         id: 'americansweet',
+        bg: 'The projects I worked on/background for brand/background for brand amercian sweat.jpg',
         tag: 'F&B',
         title: 'American Sweet',
         industry: 'Bakery & Patisserie',
@@ -1724,6 +1753,7 @@
       },
       {
         id: 'ameely',
+        bg: 'The projects I worked on/background for brand/background for brand ameely travel.jpg',
         tag: 'Travel',
         title: 'Ameely Travel',
         industry: 'Travel & Tourism',
@@ -1737,6 +1767,7 @@
       },
       {
         id: 'casual',
+        bg: 'The projects I worked on/background for brand/background for brand Casual shoes.jpg',
         tag: 'Retail',
         title: 'Casual',
         industry: 'Footwear & Accessories Retail',
@@ -1750,6 +1781,7 @@
       },
       {
         id: 'autoline',
+        bg: 'The projects I worked on/background for brand/background for brand auto line.jpg',
         tag: 'Automotive',
         title: 'Auto Line',
         industry: 'Automotive Services & Car Maintenance',
@@ -1763,6 +1795,7 @@
       },
       {
         id: 'athena',
+        bg: 'The projects I worked on/background for brand/background for brand Athena Wear.jpg',
         tag: 'Fashion',
         title: 'Athena Wear',
         industry: 'Fashion & Apparel',
@@ -1776,6 +1809,7 @@
       },
       {
         id: 'firstkids',
+        bg: 'The projects I worked on/background for brand/background for brand first kids.jpg',
         tag: 'Kids',
         title: 'First Kids',
         industry: 'Children\'s Fashion & Retail',
@@ -1818,6 +1852,9 @@
 
       poImage.src = card.querySelector('.portfolio-img').src;
       poImage.alt = card.querySelector('.portfolio-img').alt;
+      poImage.parentElement.parentElement.style.backgroundImage = data.bg
+        ? "url('" + data.bg + "')"
+        : "url('" + poImage.src + "')";
       poTitle.textContent = data.title;
       poTag.textContent = data.tag;
       poCounter.textContent = (idx + 1) + ' / ' + cards.length;

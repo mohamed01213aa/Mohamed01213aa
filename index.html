@@ -289,7 +289,8 @@
     }
     .experience-wrap::before {
       content: ""; position: absolute; left: 23px; top: 0; bottom: 0;
-      width: 2px; background: linear-gradient(to bottom, #8B2635, rgba(139,38,53,0.2));
+      width: 2px;
+      background: linear-gradient(to bottom, #4A90D9 var(--line-fill, 0%), rgba(245,230,211,0.08) var(--line-fill, 0%));
     }
     .exp-item {
       position: relative; margin-bottom: 60px;
@@ -303,11 +304,22 @@
       display: flex; align-items: center; justify-content: center;
       font-family: 'Playfair Display', serif;
       font-size: 1.1rem; font-weight: 700; color: #fff;
-      z-index: 2; transition: all 0.5s ease;
+      z-index: 2; transition: background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease, transform 0.4s ease;
     }
     .exp-item.visible .exp-num {
       background: #f9b233; border-color: #f9b233;
       box-shadow: 0 0 24px rgba(249,178,51,0.3);
+    }
+    .exp-item.past .exp-num {
+      background: #4A90D9; border-color: #4A90D9;
+      box-shadow: 0 0 24px rgba(74,144,217,0.35);
+      transform: scale(1.08);
+    }
+    .exp-item.past .exp-card {
+      border-color: rgba(74,144,217,0.15);
+    }
+    .exp-item.past .exp-card .exp-sub {
+      color: #4A90D9;
     }
     .exp-card {
       background: rgba(245,230,211,0.04);
@@ -911,7 +923,7 @@
       #socialLinksMobile { display: flex; }
 
       .experience-wrap { padding-left: 50px; }
-      .exp-num { left: -50px; width: 40px; height: 40px; font-size: 1rem; }
+      .exp-num { left: -50px; width: 42px; height: 42px; font-size: 1rem; }
       .exp-card .exp-detail-list { grid-template-columns: 1fr; }
     }
 
@@ -944,7 +956,7 @@
       .about-stat-num { font-size: 1.4rem; }
 
       .experience-wrap { padding-left: 44px; }
-      .exp-num { left: -44px; width: 34px; height: 34px; font-size: 0.85rem; }
+      .exp-num { left: -44px; width: 38px; height: 38px; font-size: 0.9rem; min-width: 38px; }
       .exp-card { padding: 20px; }
       .exp-card h3 { font-size: 1.05rem; }
       .exp-card .exp-detail-list { grid-template-columns: 1fr; }
@@ -1448,6 +1460,36 @@
           </div>
         </div>
 
+        <div class="portfolio-card" data-reveal data-reveal-delay="1100">
+          <div class="portfolio-img-wrap">
+            <img class="portfolio-img" src="The projects I worked on/Logo projects/logo PMFOOTWEAR.jpg" alt="PM Footwear Logo">
+            <div class="portfolio-view">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              View
+            </div>
+          </div>
+          <div class="portfolio-info">
+            <span class="portfolio-tag">Footwear</span>
+            <h3>PM Footwear</h3>
+            <p>Premium Egyptian handcrafted leather footwear brand. WordPress e-commerce store design, product management &amp; optimization.</p>
+          </div>
+        </div>
+
+        <div class="portfolio-card" data-reveal data-reveal-delay="1200">
+          <div class="portfolio-img-wrap">
+            <img class="portfolio-img" src="The projects I worked on/Logo projects/logo brand perfumes for less.jpg" alt="Perfumes For Less Logo">
+            <div class="portfolio-view">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              View
+            </div>
+          </div>
+          <div class="portfolio-info">
+            <span class="portfolio-tag">Beauty</span>
+            <h3>Perfumes For Less</h3>
+            <p>Premium Saudi Arabian e-commerce perfume store. Shopify storefront development, product catalog &amp; pricing management.</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -1587,6 +1629,53 @@
       });
     }, { rootMargin: '0px 0px -80px 0px' });
     document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
+
+    // ── Experience timeline: scroll-linked color animation ──
+    const expItems = document.querySelectorAll('.exp-item');
+    const expWrap = document.querySelector('.experience-wrap');
+    let circlePositions = [];
+
+    function calcCirclePositions() {
+      circlePositions = [];
+      if (!expWrap || !expItems.length) return;
+      const wRect = expWrap.getBoundingClientRect();
+      const wH = expWrap.offsetHeight;
+      expItems.forEach(item => {
+        const num = item.querySelector('.exp-num');
+        if (!num) return;
+        const nRect = num.getBoundingClientRect();
+        const offsetFromTop = nRect.top - wRect.top + nRect.height / 2;
+        circlePositions.push(offsetFromTop / wH);
+      });
+    }
+
+    function updateExpTimeline() {
+      if (!expWrap || !expItems.length) return;
+      const wH = expWrap.offsetHeight;
+      const vH = window.innerHeight;
+      const wTop = expWrap.getBoundingClientRect().top;
+      const lineFill = Math.min(1, Math.max(0, (vH - wTop) / (wH + vH)));
+      expWrap.style.setProperty('--line-fill', (lineFill * 100) + '%');
+      expItems.forEach((item, i) => {
+        if (circlePositions[i] === undefined) return;
+        if (lineFill >= circlePositions[i]) {
+          item.classList.add('past');
+        } else {
+          item.classList.remove('past');
+        }
+      });
+    }
+
+    calcCirclePositions();
+    let expTicking = false;
+    window.addEventListener('scroll', () => {
+      if (!expTicking) {
+        requestAnimationFrame(() => { updateExpTimeline(); expTicking = false; });
+        expTicking = true;
+      }
+    }, { passive: true });
+    window.addEventListener('resize', () => { calcCirclePositions(); updateExpTimeline(); });
+    updateExpTimeline();
 
     // ── Word-by-word glow ──
     (function wordGlow() {
@@ -1824,6 +1913,34 @@
         socials: [['Website', 'http://firstkidswear.com/'], ['Facebook', 'https://www.facebook.com/firstkidsonlinestore/'], ['Instagram', 'https://www.instagram.com/firstkids99']],
         canva: 'https://canva.link/tanr4lexqiny7w7',
         followers: [['Facebook', '7.6K+'], ['Instagram', '1.8K+'], ['TikTok', '313+']]
+      },
+      {
+        id: 'pmfootwear',
+        bg: 'The projects I worked on/background for brand/Background for brand PM FOOTWEAR.jpg',
+        tag: 'Footwear',
+        title: 'PM Footwear',
+        industry: 'Men\'s Premium Leather Footwear',
+        overview: 'PM Footwear is a premium Egyptian footwear brand specializing in handcrafted men\'s leather shoes made from 100% genuine cow leather. The brand focuses on delivering a balance between elegance, comfort, and durability through modern designs and high-quality craftsmanship. It targets men aged 22–50 who appreciate premium fashion, timeless style, and everyday comfort.',
+        role: 'As a WordPress Website Developer, I designed and customized the e-commerce website, managed the full product catalog, handled pricing, and optimized the store structure for a seamless online shopping experience.',
+        tasks: ['WordPress Website Design & Customization', 'Product Upload & Catalog Management', 'Product Pricing Management', 'Product Variants & Descriptions Setup', 'E-commerce Store Structure Optimization', 'UX & Navigation Improvement'],
+        deliverables: 'WordPress E-commerce Website, Full Product Catalog, Product Pricing Configuration, Optimized Store Structure',
+        socials: [['Website', 'https://pm-footwear.com'], ['Instagram', 'https://www.instagram.com/pmfootwear_'], ['Facebook', 'https://www.facebook.com/Pmfoot']],
+        canva: '',
+        followers: []
+      },
+      {
+        id: 'perfumesforless',
+        bg: 'The projects I worked on/background for brand/background for brand perfumes for less.webp',
+        tag: 'Beauty',
+        title: 'Perfumes For Less',
+        industry: 'Premium E-commerce Perfume Store',
+        overview: 'Perfumes For Less is a premium Saudi Arabian e-commerce brand specializing in authentic designer and niche fragrances. Offering a curated collection of luxury perfumes for men, women, and niche fragrance lovers at competitive prices — the brand emphasizes 100% original products, secure shopping, fast shipping, and premium customer service across Saudi Arabia and the GCC.',
+        role: 'As a Shopify Store Developer, I designed and customized the storefront, managed the full product catalog including collections and variants, handled pricing, and optimized the store layout for a luxury shopping experience.',
+        tasks: ['Shopify Storefront Design & Customization', 'Homepage Layout & UX Optimization', 'Product Upload & Collection Management', 'Pricing & Discount Management', 'Product Descriptions & Variants Setup', 'Store Navigation & Structure Optimization'],
+        deliverables: 'Shopify E-commerce Store, Organized Product Collections, Pricing Configuration, Optimized Store Navigation',
+        socials: [['Website', 'https://perfumesforless.com'], ['Facebook', 'https://www.facebook.com/profile.php?id=61580112911211']],
+        canva: '',
+        followers: []
       },
     ];
 

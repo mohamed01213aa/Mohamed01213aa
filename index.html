@@ -164,6 +164,8 @@
       position: absolute; top: 0; left: 0;
       z-index: 1; opacity: 0; transform: scale(0.95);
       transition: opacity 0.8s ease, transform 0.8s ease;
+      -webkit-user-select: none; user-select: none;
+      -webkit-touch-callout: none;
     }
     .hero-video.active {
       opacity: 1; transform: scale(1); z-index: 3;
@@ -1108,6 +1110,8 @@
               id="heroVideo"
               src="About Me/PixVerse_V6_Image_Text_360P_عايز_الشخصية_اللى.mp4"
               muted playsinline preload="none"
+              controlslist="nodownload noplaybackrate"
+              disablePictureInPicture
             ></video>
           </div>
         </div>
@@ -1699,6 +1703,10 @@
 
       video.addEventListener('ended', showPhoto);
     })();
+
+    // ── Prevent video download ──
+    document.getElementById('heroVideo').addEventListener('contextmenu', e => e.preventDefault());
+    document.getElementById('heroVideo').addEventListener('dragstart', e => e.preventDefault());
 
     // ── Experience timeline: scroll-linked color animation ──
     const expItems = document.querySelectorAll('.exp-item');

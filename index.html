@@ -137,16 +137,36 @@
     .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
     .hero-photo-wrapper {
       display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .hero-media {
+      position: relative; width: 100%; max-width: 420px;
+      aspect-ratio: 3/4;
     }
     .hero-photo {
-      width: 100%; max-width: 420px; aspect-ratio: 3/4;
-      border-radius: 24px; object-fit: cover;
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 40px;
       box-shadow: 0 30px 60px rgba(0,0,0,0.5);
       border: 2px solid rgba(245,230,211,0.15);
-      transition: transform 0.5s ease, box-shadow 0.5s ease, border-radius 0.3s ease;
+      position: relative; z-index: 2;
+      transition: opacity 0.8s ease, transform 0.8s ease, border-radius 0.3s ease;
+      transform: scale(1);
     }
-    .hero-photo:hover {
-      transform: scale(1.02); box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+    .hero-photo.swapped {
+      opacity: 0; transform: scale(1.05);
+      pointer-events: none;
+    }
+    .hero-video {
+      width: 100%; height: 100%; object-fit: cover;
+      border-radius: 40px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      border: 2px solid rgba(245,230,211,0.15);
+      position: absolute; top: 0; left: 0;
+      z-index: 1; opacity: 0; transform: scale(0.95);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .hero-video.active {
+      opacity: 1; transform: scale(1); z-index: 3;
     }
     .social-links {
       display: flex; gap: 18px; margin-top: 32px;
@@ -853,8 +873,8 @@
     ════════════════════════════════════════ */
     [data-reveal] {
       opacity: 0; transform: translateY(50px);
-      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      transition: opacity 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     [data-reveal].visible {
       opacity: 1; transform: translateY(0);
@@ -905,7 +925,8 @@
       .hero-tagline { align-items: center; text-align: center; }
       .hero-actions { justify-content: center; }
       .social-links { justify-content: center; }
-      .hero-photo { max-width: 300px; }
+      .hero-media { max-width: 320px; }
+      .hero-photo, .hero-video { max-width: 100%; }
       .hero-photo-wrapper { order: -1; }
 
       .about-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -948,7 +969,8 @@
       .process-grid { grid-template-columns: 1fr; }
       .portfolio-grid { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: 1fr; }
-      .hero-photo { max-width: 240px; }
+      .hero-media { max-width: 280px; }
+      .hero-photo, .hero-video { max-width: 100%; }
 
       .hero-tagline .line::after { width: 20px; }
 
@@ -969,6 +991,10 @@
       .qr-placeholder img { width: 140px; height: 140px; }
 
       .skills-group { margin-bottom: 20px; }
+
+      .cv-download { width: 48px; padding: 0; gap: 0; }
+      .cv-download .cv-label { display: none; }
+      .cv-download:hover { width: 48px; transform: none; box-shadow: none; background: transparent; border-color: rgba(245,230,211,0.2); }
     }
 
     @media (max-width: 420px) {
@@ -978,6 +1004,7 @@
       .hero-actions .btn { width: 100%; justify-content: center; }
       .hero-tagline { font-size: 0.7rem; letter-spacing: 2px; gap: 6px; }
       .hero-tagline .line { gap: 10px; }
+      .hero-media { max-width: 240px; }
       .hero-tagline .line::after { width: 16px; }
       .hero-desc { font-size: 0.9rem; }
 
@@ -1069,11 +1096,20 @@
           </div>
         </div>
         <div class="hero-photo-wrapper" data-reveal="right">
-          <img
-            class="hero-photo"
-            src="About Me/My photo Mohamed Nady.jpeg"
-            alt="Mohamed Nady"
-          >
+          <div class="hero-media" id="heroMedia">
+            <img
+              class="hero-photo"
+              id="heroPhoto"
+              src="About Me/My photo Mohamed Nady.png"
+              alt="Mohamed Nady"
+            >
+            <video
+              class="hero-video"
+              id="heroVideo"
+              src="About Me/PixVerse_V6_Image_Text_360P_عايز_الشخصية_اللى.mp4"
+              muted playsinline preload="none"
+            ></video>
+          </div>
         </div>
       </div>
     </div>
@@ -1606,18 +1642,17 @@
   <script>
     // ── Navbar scroll effect ──
     const navbar = document.getElementById('navbar');
-    const heroPhoto = document.querySelector('.hero-photo');
+    const heroPhotoEl = document.querySelector('.hero-photo');
+    const heroVideoEl = document.querySelector('.hero-video');
     window.addEventListener('scroll', () => {
       if (window.scrollY > 60) navbar.classList.add('scrolled');
       else navbar.classList.remove('scrolled');
-      // Photo corners morph to circle on scroll
-      if (heroPhoto) {
-        const maxScroll = 400;
-        const scroll = Math.min(window.scrollY, maxScroll);
-        const progress = scroll / maxScroll;
-        const radius = 24 + (50 - 24) * progress;
-        heroPhoto.style.borderRadius = radius + '%';
-      }
+      const maxScroll = 400;
+      const scroll = Math.min(window.scrollY, maxScroll);
+      const progress = scroll / maxScroll;
+      const radiusVal = progress === 0 ? '' : (40 + (50 - 40) * progress) + '%';
+      if (heroPhotoEl) heroPhotoEl.style.borderRadius = radiusVal;
+      if (heroVideoEl) heroVideoEl.style.borderRadius = radiusVal;
     });
 
     // ── Scroll reveal animations ──
@@ -1629,8 +1664,41 @@
           revealObserver.unobserve(entry.target);
         }
       });
-    }, { rootMargin: '0px 0px -80px 0px' });
+    }, { rootMargin: '0px 0px -10px 0px' });
     document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
+
+    // ── Hero photo ↔ video transition ──
+    (function heroTransition() {
+      const photo = document.getElementById('heroPhoto');
+      const video = document.getElementById('heroVideo');
+      const media = document.getElementById('heroMedia');
+      if (!photo || !video || !media) return;
+      let playing = false;
+
+      function showVideo() {
+        if (playing) return;
+        playing = true;
+        video.currentTime = 0;
+        video.play();
+        photo.classList.add('swapped');
+        video.classList.add('active');
+      }
+
+      function showPhoto() {
+        playing = false;
+        video.pause();
+        video.currentTime = 0;
+        photo.classList.remove('swapped');
+        video.classList.remove('active');
+      }
+
+      setTimeout(showVideo, 3000);
+
+      media.addEventListener('mouseenter', showVideo);
+      media.addEventListener('click', showVideo);
+
+      video.addEventListener('ended', showPhoto);
+    })();
 
     // ── Experience timeline: scroll-linked color animation ──
     const expItems = document.querySelectorAll('.exp-item');
